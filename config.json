@@ -1,0 +1,132 @@
+{
+  "log": {
+    "level": "info",
+    "timestamp": true
+  },
+  "dns": {
+    "servers": [
+      {
+        "type": "https",
+        "tag": "dns-remote",
+        "server": "8.8.8.8",
+        "server_port": 443,
+        "path": "/dns-query",
+        "detour": "proxy"
+      },
+      {
+        "type": "udp",
+        "tag": "dns-direct",
+        "server": "223.5.5.5",
+        "server_port": 53
+      }
+    ],
+    "rules": [
+      {
+        "rule_set": "geosite-cn",
+        "server": "dns-direct"
+      }
+    ],
+    "final": "dns-remote",
+    "strategy": "ipv4_only"
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "tag": "tun-in",
+      "interface_name": "sing-box-tun",
+      "address": [
+        "172.19.0.1/30"
+      ],
+      "auto_route": true,
+      "strict_route": true,
+      "stack": "mixed",
+      "route_exclude_address": [
+        "::/0"
+      ]
+    },
+    {
+      "type": "socks",
+      "tag": "socks-in",
+      "listen": "127.0.0.1",
+      "listen_port": 10808,
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "socks",
+      "tag": "proxy",
+      "server": "127.0.0.1",
+      "server_port": 1080
+    },
+    {
+      "type": "direct",
+      "tag": "direct"
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "inbound": "tun-in",
+        "action": "sniff"
+      },
+      {
+        "protocol": "dns",
+        "action": "hijack-dns"
+      },
+      {
+        "ip_cidr": [
+          "35.212.129.200/32"
+        ],
+        "action": "route",
+        "outbound": "direct"
+      },
+      {
+        "process_name": [
+          "tailscale.exe",
+          "tailscaled.exe",
+          "tailscale-ipn.exe",
+	  "SecoClientPromoteService.exe",
+	  "SecoClient.exe"
+        ],
+        "action": "route",
+        "outbound": "direct"
+      },
+      {
+        "ip_is_private": true,
+        "action": "route",
+        "outbound": "direct"
+      },
+      {
+        "rule_set": [
+          "geosite-cn",
+          "geoip-cn"
+        ],
+        "action": "route",
+        "outbound": "direct"
+      },
+      {
+        "action": "route",
+        "outbound": "proxy"
+      }
+    ],
+    "rule_set": [
+      {
+        "tag": "geosite-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs",
+        "download_detour": "proxy"
+      },
+      {
+        "tag": "geoip-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs",
+        "download_detour": "proxy"
+      }
+    ],
+    "auto_detect_interface": true,
+    "final": "proxy",
+    "default_domain_resolver": "dns-direct"
+  }
+}
