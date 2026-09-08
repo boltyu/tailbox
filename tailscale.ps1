@@ -58,7 +58,8 @@ if ($needAdmin -and -not $isAdmin) {
 # 2. Start Tailscale daemon (tailscaled) if not already running
 if (-not $tailscaledProcess) {
     Write-Host "Starting Tailscale daemon (tailscaled)..." -ForegroundColor Cyan
-    $tailscaledArgs = "--tun=userspace-networking --socks5-server=127.0.0.1:1080 --outbound-http-proxy-listen=127.0.0.1:3128"
+    # $tailscaledArgs = "--tun=userspace-networking --socks5-server=127.0.0.1:1080 --outbound-http-proxy-listen=127.0.0.1:3128"
+    $tailscaledArgs = "--tun=userspace-networking --socks5-server=127.0.0.1:1080"
     
     # Check if we are running in Windows Terminal
     $isWT = $env:WT_SESSION -ne $null

@@ -22,7 +22,9 @@
     ],
     "rules": [
       {
-        "rule_set": "geosite-cn",
+        "rule_set": [
+          "direct-sites"
+        ],
         "server": "dns-direct"
       }
     ],
@@ -45,10 +47,16 @@
       ]
     },
     {
-      "type": "socks",
-      "tag": "socks-in",
+      "type": "http",
+      "tag": "http-in",
       "listen": "127.0.0.1",
       "listen_port": 10808,
+      "users": [
+        {
+          "username": "yuning",
+          "password": "feierfei"
+        }
+      ]
     }
   ],
   "outbounds": [
@@ -74,19 +82,26 @@
         "action": "hijack-dns"
       },
       {
-        "ip_cidr": [
-          "35.212.129.200/32"
+        "rule_set": [
+          "direct-sites"
         ],
         "action": "route",
         "outbound": "direct"
       },
       {
         "process_name": [
+          "chrome.exe"
+        ],
+        "action": "route",
+        "outbound": "proxy"
+      },
+      {
+        "process_name": [
           "tailscale.exe",
           "tailscaled.exe",
           "tailscale-ipn.exe",
-	  "SecoClientPromoteService.exe",
-	  "SecoClient.exe"
+          "SecoClientPromoteService.exe",
+          "SecoClient.exe"
         ],
         "action": "route",
         "outbound": "direct"
@@ -97,32 +112,74 @@
         "outbound": "direct"
       },
       {
-        "rule_set": [
-          "geosite-cn",
-          "geoip-cn"
-        ],
-        "action": "route",
-        "outbound": "direct"
-      },
-      {
         "action": "route",
         "outbound": "proxy"
       }
     ],
     "rule_set": [
       {
-        "tag": "geosite-cn",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs",
-        "download_detour": "proxy"
-      },
-      {
-        "tag": "geoip-cn",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs",
-        "download_detour": "proxy"
+        "tag": "direct-sites",
+        "type": "inline",
+        "rules": [
+          {
+            "ip_cidr": [
+              "35.212.129.200/32",
+              "27.188.56.209/32"
+            ]
+          },
+          {
+            "domain_suffix": [
+              "oa.microbt.com",
+              "microbt.kdgalaxy.com",
+              "microbt.com",
+              "kdgalaxy.com",
+              "163.com",
+              "126.net",
+              "volccdn.com",
+              "volces.com",
+              "caixin.com",
+              "kimi.com",
+              "moonshot.cn",
+              "qq.com",
+              "tencent.com",
+              "tencent-cloud.com",
+              "tencent-cloud.cn",
+              "bilibili.com",
+              "hdslb.com",
+              "bilivideo.com",
+              "jd.com",
+              "360buyimg.com",
+              "alicdn.com",
+              "taobao.com",
+              "modelscope.cn",
+              "aliyun.com",
+              "qwen.ai",
+              "aliyuncs.com",
+              "dingtalk.com",
+              "aivilization.ai",
+              "aivilization.cn",
+              "bigmodel.cn",
+              "sensorsdata.cn",
+              "gitee.com",
+              "doubao.com",
+              "trae.com.cn",
+              "trae.cn",
+              "zijieapi.com",
+              "ibytedapm.com",
+              "weibo.com",
+              "baidu.com",
+              "zhihu.com",
+              "bing.com",
+              "microsoft.com",
+              "deepseek.com",
+              "tj.gov.cn",
+              "tjqcjj.com",
+              "mi.com",
+              "xiaomimimo.com",
+              "xiaomi.com"
+            ]
+          }
+        ]
       }
     ],
     "auto_detect_interface": true,
