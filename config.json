@@ -89,31 +89,22 @@
         "outbound": "direct"
       },
       {
-        "process_name": [
-          "chrome.exe"
-        ],
-        "action": "route",
-        "outbound": "proxy"
-      },
-      {
-        "process_name": [
-          "tailscale.exe",
-          "tailscaled.exe",
-          "tailscale-ipn.exe",
-          "SecoClientPromoteService.exe",
-          "SecoClient.exe"
-        ],
-        "action": "route",
-        "outbound": "direct"
-      },
-      {
         "ip_is_private": true,
         "action": "route",
         "outbound": "direct"
       },
       {
+        "process_name": [
+          "chrome.exe",
+          "agy.exe",
+          "Gemini.exe"
+        ],
         "action": "route",
         "outbound": "proxy"
+      },
+      {
+        "action": "route",
+        "outbound": "direct"
       }
     ],
     "rule_set": [

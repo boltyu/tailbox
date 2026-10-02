@@ -26,7 +26,7 @@ if (-not $tailscaledProcess) {
 }
 
 # We also check if sing-box config uses TUN mode, which requires admin privileges
-$singBoxDir = "D:\Program Files\sing-box-1.14.0-alpha.24-windows-amd64"
+$singBoxDir = "D:\Program Files\sing-box-1.14.1-windows-amd64"
 $singBoxConfig = Join-Path $singBoxDir "config.json"
 $singBoxNeedsAdmin = $false
 
