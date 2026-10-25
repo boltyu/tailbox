@@ -135,11 +135,9 @@ Start-Sleep -Seconds 2
 # 5. Start sing-box in the current pane/window (blocking, logs shown here)
 if (Test-Path $singBoxDir) {
     Write-Host "Starting sing-box..." -ForegroundColor Cyan
-    Push-Location $singBoxDir
     try {
-        & .\sing-box.exe run -c .\config.json
+        & $singBoxDir\sing-box.exe run -c .\config.json
     } finally {
-        Pop-Location
     }
 } else {
     Write-Error "sing-box directory not found: $singBoxDir"

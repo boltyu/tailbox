@@ -95,9 +95,11 @@
       },
       {
         "process_name": [
+          "steamwebhelper.exe",
           "chrome.exe",
           "agy.exe",
-          "Gemini.exe"
+          "Gemini.exe",
+          "GoogleUpdate.exe",
         ],
         "action": "route",
         "outbound": "proxy"
