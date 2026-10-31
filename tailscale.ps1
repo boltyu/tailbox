@@ -55,7 +55,20 @@ if ($needAdmin -and -not $isAdmin) {
     }
 }
 
-# 2. Start Tailscale daemon (tailscaled) if not already running
+# 2. Stop official Tailscale Windows Service if running to avoid Named Pipe conflict
+try {
+    $officialSvc = Get-Service -Name "Tailscale" -ErrorAction SilentlyContinue
+    if ($officialSvc -and $officialSvc.Status -eq "Running") {
+        Write-Host "Official Windows Service 'Tailscale' is running. Stopping it..." -ForegroundColor Yellow
+        Stop-Service -Name "Tailscale" -Force -ErrorAction SilentlyContinue
+        Start-Sleep -Seconds 1
+        Write-Host "Official Windows Service stopped." -ForegroundColor Green
+    }
+} catch {
+    Write-Warning "Could not stop official Tailscale service: $_"
+}
+
+# 3. Start Tailscale daemon (tailscaled) if not already running
 if (-not $tailscaledProcess) {
     Write-Host "Starting Tailscale daemon (tailscaled)..." -ForegroundColor Cyan
     # $tailscaledArgs = "--tun=userspace-networking --socks5-server=127.0.0.1:1080 --outbound-http-proxy-listen=127.0.0.1:3128"

@@ -23,7 +23,7 @@
     "rules": [
       {
         "rule_set": [
-          "direct-sites"
+          "direct-domains"
         ],
         "server": "dns-direct"
       }
@@ -39,6 +39,7 @@
       "address": [
         "172.19.0.1/30"
       ],
+      "mtu": 1400,
       "auto_route": true,
       "strict_route": true,
       "stack": "mixed",
@@ -74,6 +75,20 @@
   "route": {
     "rules": [
       {
+        "process_name": [
+          "tailscaled.exe",
+          "tailscale.exe",
+          "tailscale-ipn.exe"
+        ],
+        "action": "route",
+        "outbound": "direct"
+      },
+      {
+        "network": "udp",
+        "port": 443,
+        "action": "reject"
+      },
+      {
         "inbound": "tun-in",
         "action": "sniff"
       },
@@ -83,7 +98,8 @@
       },
       {
         "rule_set": [
-          "direct-sites"
+          "direct-domains",
+          "direct-ips"
         ],
         "action": "route",
         "outbound": "direct"
@@ -99,7 +115,7 @@
           "chrome.exe",
           "agy.exe",
           "Gemini.exe",
-          "GoogleUpdate.exe",
+          "GoogleUpdate.exe"
         ],
         "action": "route",
         "outbound": "proxy"
@@ -111,15 +127,9 @@
     ],
     "rule_set": [
       {
-        "tag": "direct-sites",
+        "tag": "direct-domains",
         "type": "inline",
         "rules": [
-          {
-            "ip_cidr": [
-              "35.212.129.200/32",
-              "27.188.56.209/32"
-            ]
-          },
           {
             "domain_suffix": [
               "oa.microbt.com",
@@ -170,6 +180,18 @@
               "mi.com",
               "xiaomimimo.com",
               "xiaomi.com"
+            ]
+          }
+        ]
+      },
+      {
+        "tag": "direct-ips",
+        "type": "inline",
+        "rules": [
+          {
+            "ip_cidr": [
+              "35.212.129.200/32",
+              "27.188.56.209/32"
             ]
           }
         ]

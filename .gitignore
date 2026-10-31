@@ -1,0 +1,3 @@
+# Runtime PID & Logs
+*.pid
+logs/
