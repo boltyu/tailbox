@@ -115,7 +115,8 @@
           "chrome.exe",
           "agy.exe",
           "Gemini.exe",
-          "GoogleUpdate.exe"
+          "GoogleUpdate.exe",
+          "updater.exe"
         ],
         "action": "route",
         "outbound": "proxy"
@@ -152,6 +153,13 @@
               "bilivideo.com",
               "jd.com",
               "360buyimg.com",
+              "3.cn",
+              "jd.hk",
+              "jingdong.com",
+              "jdpay.com",
+              "jdcloud.com",
+              "jingdonghealth.cn",
+              "360buy.com",
               "alicdn.com",
               "taobao.com",
               "modelscope.cn",
