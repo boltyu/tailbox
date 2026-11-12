@@ -28,7 +28,7 @@ $tailscaledPath = if ($tailscaleDir) { Join-Path $tailscaleDir "tailscaled.exe" 
 $tailscaleCli = if ($tailscaleDir) { Join-Path $tailscaleDir "tailscale.exe" } else { "" }
 
 # sing-box Paths
-$singBoxDir = "D:\Program Files\sing-box-1.14.1-windows-amd64"
+$singBoxDir = ".\sing-box-1.14.4-windows-amd64"
 $singBoxExe = Join-Path $singBoxDir "sing-box.exe"
 $configPath = Join-Path $scriptDir "config.json"
 

@@ -6,29 +6,32 @@
   "dns": {
     "servers": [
       {
-        "type": "https",
+        "tag": "dns-fakeip",
+        "type": "fakeip",
+        "inet4_range": "198.18.0.0/15"
+      },
+      {
+        "tag": "dns-direct",
+        "type": "udp",
+        "server": "223.5.5.5",
+        "server_port": 53
+      },
+      {
         "tag": "dns-remote",
+        "type": "https",
         "server": "8.8.8.8",
         "server_port": 443,
         "path": "/dns-query",
         "detour": "proxy"
-      },
-      {
-        "type": "udp",
-        "tag": "dns-direct",
-        "server": "223.5.5.5",
-        "server_port": 53
       }
     ],
     "rules": [
       {
-        "rule_set": [
-          "direct-domains"
-        ],
-        "server": "dns-direct"
+        "inbound": "tun-in",
+        "server": "dns-fakeip"
       }
     ],
-    "final": "dns-remote",
+    "final": "dns-direct",
     "strategy": "ipv4_only"
   },
   "inbounds": [
@@ -46,18 +49,6 @@
       "route_exclude_address": [
         "::/0"
       ]
-    },
-    {
-      "type": "http",
-      "tag": "http-in",
-      "listen": "127.0.0.1",
-      "listen_port": 10808,
-      "users": [
-        {
-          "username": "yuning",
-          "password": "feierfei"
-        }
-      ]
     }
   ],
   "outbounds": [
@@ -69,7 +60,8 @@
     },
     {
       "type": "direct",
-      "tag": "direct"
+      "tag": "direct",
+      "domain_resolver": "dns-direct"
     }
   ],
   "route": {
@@ -108,6 +100,14 @@
         "ip_is_private": true,
         "action": "route",
         "outbound": "direct"
+      },
+      {
+        "ip_cidr": [
+          "100.64.0.0/10",
+          "fd7a:115c:a1e0::/48"
+        ],
+        "action": "route",
+        "outbound": "proxy"
       },
       {
         "process_name": [
@@ -187,7 +187,11 @@
               "tjqcjj.com",
               "mi.com",
               "xiaomimimo.com",
-              "xiaomi.com"
+              "xiaomi.com",
+              "volcengine.com",
+              "bytegoofy.com",
+              "toutiao.com",
+              "douyin.com"
             ]
           }
         ]
@@ -206,7 +210,7 @@
       }
     ],
     "auto_detect_interface": true,
-    "final": "proxy",
+    "final": "direct",
     "default_domain_resolver": "dns-direct"
   }
 }
