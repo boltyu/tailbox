@@ -65,6 +65,7 @@
     }
   ],
   "route": {
+    "find_process": true,
     "rules": [
       {
         "process_name": [
@@ -90,14 +91,8 @@
       },
       {
         "rule_set": [
-          "direct-domains",
           "direct-ips"
         ],
-        "action": "route",
-        "outbound": "direct"
-      },
-      {
-        "ip_is_private": true,
         "action": "route",
         "outbound": "direct"
       },
@@ -110,15 +105,25 @@
         "outbound": "proxy"
       },
       {
+        "ip_is_private": true,
+        "action": "route",
+        "outbound": "direct"
+      },
+      {
         "process_name": [
           "steamwebhelper.exe",
-          "chrome.exe",
-          "agy.exe",
-          "Gemini.exe",
-          "GoogleUpdate.exe",
-          "updater.exe"
+	  "ChromeSetup.exe"
         ],
         "action": "route",
+        "outbound": "proxy"
+      },
+      {
+        "process_path_regex": [
+          "(?i)^C:\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\.*\\.exe$",
+          "(?i)^C:\\\\Users\\\\light\\\\AppData\\\\Local\\\\antigravity\\\\.*\\.exe$",
+          "(?i)^C:\\\\Program Files \\(x86\\)\\\\Google.*\\.exe$",
+          "(?i)^C:\\\\Users\\\\light\\\\AppData\\\\Local\\\\agy\\\\.*\\.exe$"
+        ],
         "outbound": "proxy"
       },
       {
@@ -127,75 +132,6 @@
       }
     ],
     "rule_set": [
-      {
-        "tag": "direct-domains",
-        "type": "inline",
-        "rules": [
-          {
-            "domain_suffix": [
-              "oa.microbt.com",
-              "microbt.kdgalaxy.com",
-              "microbt.com",
-              "kdgalaxy.com",
-              "163.com",
-              "126.net",
-              "volccdn.com",
-              "volces.com",
-              "caixin.com",
-              "kimi.com",
-              "moonshot.cn",
-              "qq.com",
-              "tencent.com",
-              "tencent-cloud.com",
-              "tencent-cloud.cn",
-              "bilibili.com",
-              "hdslb.com",
-              "bilivideo.com",
-              "jd.com",
-              "360buyimg.com",
-              "3.cn",
-              "jd.hk",
-              "jingdong.com",
-              "jdpay.com",
-              "jdcloud.com",
-              "jingdonghealth.cn",
-              "360buy.com",
-              "alicdn.com",
-              "taobao.com",
-              "modelscope.cn",
-              "aliyun.com",
-              "qwen.ai",
-              "aliyuncs.com",
-              "dingtalk.com",
-              "aivilization.ai",
-              "aivilization.cn",
-              "bigmodel.cn",
-              "sensorsdata.cn",
-              "gitee.com",
-              "doubao.com",
-              "trae.com.cn",
-              "trae.cn",
-              "zijieapi.com",
-              "ibytedapm.com",
-              "weibo.com",
-              "baidu.com",
-              "zhihu.com",
-              "bing.com",
-              "microsoft.com",
-              "deepseek.com",
-              "tj.gov.cn",
-              "tjqcjj.com",
-              "mi.com",
-              "xiaomimimo.com",
-              "xiaomi.com",
-              "volcengine.com",
-              "bytegoofy.com",
-              "toutiao.com",
-              "douyin.com"
-            ]
-          }
-        ]
-      },
       {
         "tag": "direct-ips",
         "type": "inline",
